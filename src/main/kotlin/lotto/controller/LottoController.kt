@@ -7,6 +7,6 @@ class LottoController {
     private val inputView = InputView()
     private val outputView = OutputView()
     fun run() {
-
+        val purchaseAmount = inputView.readPurchaseAmount()
     }
 }
