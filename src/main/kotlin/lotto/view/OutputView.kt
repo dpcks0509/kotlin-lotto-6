@@ -11,4 +11,8 @@ class OutputView {
     fun printLottos(lottos: List<Lotto>) {
         lottos.forEach { lotto -> println(lotto) }
     }
+
+    fun printErrorMessage(errorMessage: String) {
+        println(errorMessage)
+    }
 }

@@ -15,8 +15,17 @@ class LottoController {
         val winning = getWinningInfo()
     }
 
+    private fun <T> getInputUntilValid(inputFunction: () -> T): T {
+        return try {
+            inputFunction()
+        } catch (illegalArgumentException: IllegalArgumentException) {
+            outputView.printErrorMessage(illegalArgumentException.message.toString())
+            getInputUntilValid(inputFunction)
+        }
+    }
+
     private fun purchaseLottos(): Purchase {
-        val purchaseAmount = inputView.readPurchaseAmount()
+        val purchaseAmount = getInputUntilValid { inputView.readPurchaseAmount() }
         return Purchase(purchaseAmount)
     }
 
@@ -26,8 +35,8 @@ class LottoController {
     }
 
     private fun getWinningInfo(): Winning {
-        val winningNumbers = inputView.readWinningNumbers()
-        val bonusNumber = inputView.readBonusNumber(winningNumbers)
+        val winningNumbers = getInputUntilValid { inputView.readWinningNumbers() }
+        val bonusNumber = getInputUntilValid { inputView.readBonusNumber(winningNumbers) }
         return Winning(winningNumbers, bonusNumber)
     }
 }
