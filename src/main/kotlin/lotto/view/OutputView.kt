@@ -4,9 +4,9 @@ import lotto.model.Lotto
 import lotto.model.Purchase
 
 class OutputView {
-    fun printPurchase(purchase: Purchase) {
+    fun printPurchaseCount(purchaseCount: Int) {
         println()
-        println(purchase)
+        println("${purchaseCount}개를 구매했습니다.")
     }
 
     fun printLottos(lottos: List<Lotto>) {
