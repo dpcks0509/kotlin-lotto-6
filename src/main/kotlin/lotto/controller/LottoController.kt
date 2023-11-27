@@ -17,6 +17,7 @@ class LottoController {
         outputView.printPurchase(purchase)
 
         val lottos = makeLottos(purchase.getCount())
+        outputView.printLottos(lottos)
     }
 
     private fun generateRandomNumbers(): List<Int> {

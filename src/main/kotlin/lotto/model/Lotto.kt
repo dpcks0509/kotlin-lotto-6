@@ -7,4 +7,8 @@ class Lotto(private val numbers: List<Int>) {
         require(numbers.size == LOTTO_NUMBER_COUNT)
         require(numbers.toSet().size == LOTTO_NUMBER_COUNT)
     }
+
+    override fun toString(): String {
+        return numbers.sorted().joinToString(", ", "[", "]")
+    }
 }
