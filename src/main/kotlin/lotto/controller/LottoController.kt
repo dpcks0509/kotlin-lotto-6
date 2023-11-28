@@ -14,7 +14,7 @@ class LottoController {
         getPurchaseInfo(purchase)
 
         val winningLotto = getWinningLottoInfo()
-        val winningResult = getWinningResult(purchase, winningLotto)
+        getWinningResult(purchase, winningLotto)
     }
 
     private fun <T> getInputUntilValid(inputFunction: () -> T): T {
@@ -42,9 +42,8 @@ class LottoController {
         return WinningLotto(winningNumbers, bonusNumber)
     }
 
-    private fun getWinningResult(purchase: Purchase, winningLotto: WinningLotto): WinningResult {
+    private fun getWinningResult(purchase: Purchase, winningLotto: WinningLotto) {
         val winningResult = WinningResult(purchase, winningLotto)
         outputView.printWinningResult(winningResult)
-        return winningResult
     }
 }

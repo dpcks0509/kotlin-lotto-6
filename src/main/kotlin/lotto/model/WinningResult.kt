@@ -44,11 +44,11 @@ class WinningResult(private val purchase: Purchase, private val winningLotto: Wi
     private fun calculateRateOfReturn(): Double {
         val purchaseAmount = purchase.getAmount()
         val totalReward = calculateTotalReward()
-        return purchaseAmount.toDouble() / totalReward.toDouble()
+        return (totalReward * 100.0) / purchaseAmount
     }
 
     private fun calculateTotalReward(): Int {
-        return (numberOfFifthPrize * WinningPrize.FIRST_PRIZE.getReward()
+        return (numberOfFirstPrize * WinningPrize.FIRST_PRIZE.getReward()
                 + numberOfSecondPrize * WinningPrize.SECOND_PRIZE.getReward()
                 + numberOfThirdPrize * WinningPrize.THIRD_PRIZE.getReward()
                 + numberOfFourthPrize * WinningPrize.FOURTH_PRIZE.getReward()
