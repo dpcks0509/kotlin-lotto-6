@@ -5,6 +5,7 @@ import lotto.model.Purchase
 import lotto.util.Constants.LOTTO_NUMBER_COUNT
 import lotto.util.Constants.LOTTO_NUMBER_END
 import lotto.util.Constants.LOTTO_NUMBER_START
+import lotto.util.Validator.validateBonusNumber
 import lotto.util.Validator.validatePurchaseAmount
 import lotto.util.Validator.validateWinningNumbers
 import org.assertj.core.api.Assertions.assertThat
@@ -73,25 +74,53 @@ class LottoTest {
 
     @ParameterizedTest
     @ValueSource(strings = ["one,2,3,4,5,6", " 7,8,9,10,11,12", "13,14,15,16,17,18 "])
-    fun `올바른 당첨 번호 입력 예외 처리 (당첨 번호는 문자나 공백 입력이 허용되지 않는다)`(winningNumbers: String) {
+    fun `당첨 번호 입력 예외 처리 (당첨 번호는 문자나 공백 입력이 허용되지 않는다)`(winningNumbers: String) {
         assertThrows<IllegalArgumentException> { validateWinningNumbers(winningNumbers) }
     }
 
     @ParameterizedTest
     @ValueSource(strings = ["0,1,2,3,4,5", "-1,2,3,4,5,6", "1,2,3,4,5,46"])
-    fun `올바른 당첨 번호 입력 예외 처리 (당첨 번호의 숫자 범위는 1~45까지이다)`(winningNumbers: String) {
+    fun `당첨 번호 입력 예외 처리 (당첨 번호의 숫자 범위는 1~45까지이다)`(winningNumbers: String) {
         assertThrows<IllegalArgumentException> { validateWinningNumbers(winningNumbers) }
     }
 
     @ParameterizedTest
     @ValueSource(strings = ["1,2,3,4,5,6,7", "7,8,9,10,11,12,13"])
-    fun `올바른 당첨 번호 입력 예외 처리 (당첨 번호의 개수는 6개 이다)`(winningNumbers: String) {
+    fun `당첨 번호 입력 예외 처리 (당첨 번호의 개수는 6개 이다)`(winningNumbers: String) {
         assertThrows<IllegalArgumentException> { validateWinningNumbers(winningNumbers) }
     }
 
     @ParameterizedTest
     @ValueSource(strings = ["1,1,2,3,4,5", "7,8,9,10,11,11"])
-    fun `올바른 당첨 번호 입력 예외 처리 (당첨 번호는 중복되지 않는다)`(winningNumbers: String) {
+    fun `당첨 번호 입력 예외 처리 (당첨 번호는 중복되지 않는다)`(winningNumbers: String) {
         assertThrows<IllegalArgumentException> { validateWinningNumbers(winningNumbers) }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["7", "8", "9"])
+    fun `올바른 보너스 번호 입력`(bonusNumber: String) {
+        val winningNumbers = listOf(1, 2, 3, 4, 5, 6)
+        assertDoesNotThrow { validateBonusNumber(bonusNumber, winningNumbers) }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["one", " 8", "9 "])
+    fun `보너스 번호 입력 예외 처리 (보너스 번호는 문자나 공백 입력이 허용되지 않는다)`(bonusNumber: String) {
+        val winningNumbers = listOf(1, 2, 3, 4, 5, 6)
+        assertThrows<IllegalArgumentException> { validateBonusNumber(bonusNumber, winningNumbers) }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["-1", "0", "46"])
+    fun `보너스 번호 입력 예외 처리 (보너스 번호의 숫자 범위는 1~45까지이다)`(bonusNumber: String) {
+        val winningNumbers = listOf(1, 2, 3, 4, 5, 6)
+        assertThrows<IllegalArgumentException> { validateBonusNumber(bonusNumber, winningNumbers) }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["1", "2", "3"])
+    fun `보너스 번호 입력 예외 처리 (보너스 번호는 당첨 번호와 중복되지 않는다)`(bonusNumber: String) {
+        val winningNumbers = listOf(1, 2, 3, 4, 5, 6)
+        assertThrows<IllegalArgumentException> { validateBonusNumber(bonusNumber, winningNumbers) }
     }
 }
