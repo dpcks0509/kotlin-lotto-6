@@ -44,7 +44,7 @@ class LottoController {
 
     private fun getWinningResult(purchase: Purchase, winningLotto: WinningLotto): WinningResult {
         val winningResult = WinningResult(purchase, winningLotto)
-
+        outputView.printWinningResult(winningResult)
         return winningResult
     }
 }
