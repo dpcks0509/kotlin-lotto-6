@@ -7,8 +7,11 @@ class WinningResult(private val purchase: Purchase, private val winningLotto: Wi
     private var numberOfFourthPrize = 0
     private var numberOfFifthPrize = 0
 
+    private var rateOfReturn = 0.0
+
     init {
         calculateNumberOfPrize()
+        rateOfReturn = calculateRateOfReturn()
     }
 
     private fun calculateNumberOfPrize() {
@@ -38,10 +41,26 @@ class WinningResult(private val purchase: Purchase, private val winningLotto: Wi
         return numbers.contains(winningLotto.getBonusNumber())
     }
 
+    private fun calculateRateOfReturn(): Double {
+        val purchaseAmount = purchase.getAmount()
+        val totalReward = calculateTotalReward()
+        return purchaseAmount.toDouble() / totalReward.toDouble()
+    }
+
+    private fun calculateTotalReward(): Int {
+        return (numberOfFifthPrize * WinningPrize.FIRST_PRIZE.getReward()
+                + numberOfSecondPrize * WinningPrize.SECOND_PRIZE.getReward()
+                + numberOfThirdPrize * WinningPrize.THIRD_PRIZE.getReward()
+                + numberOfFourthPrize * WinningPrize.FOURTH_PRIZE.getReward()
+                + numberOfFifthPrize * WinningPrize.FIFTH_PRIZE.getReward())
+    }
+
 
     fun getNumberOfFirstPrize() = numberOfFirstPrize
     fun getNumberOfSecondPrize() = numberOfSecondPrize
     fun getNumberOfThirdPrize() = numberOfThirdPrize
     fun getNumberOfFourthPrize() = numberOfFourthPrize
     fun getNumberOfFifthPrize() = numberOfFifthPrize
+
+    fun getRateOfReturn() = rateOfReturn
 }
