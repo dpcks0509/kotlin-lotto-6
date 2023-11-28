@@ -2,6 +2,9 @@ package lotto
 
 import lotto.model.Lotto
 import lotto.model.Purchase
+import lotto.util.Constants.LOTTO_NUMBER_COUNT
+import lotto.util.Constants.LOTTO_NUMBER_END
+import lotto.util.Constants.LOTTO_NUMBER_START
 import lotto.util.Validator.validatePurchaseAmount
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -47,5 +50,17 @@ class LottoTest {
         val actualPurchaseCount = purchase.getCount()
 
         assertThat(actualPurchaseCount).isEqualTo(expectPurchaseCount)
+    }
+
+    @Test
+    fun `발행한 로또 번호 생성`() {
+        val purchase = Purchase(8000)
+
+        purchase.getLottos().forEach { lotto ->
+            lotto.getNumbers().forEach { number ->
+                assertThat(number).isBetween(LOTTO_NUMBER_START, LOTTO_NUMBER_END)
+            }
+            assertThat(lotto.getNumbers().toSet().size).isEqualTo(LOTTO_NUMBER_COUNT)
+        }
     }
 }
