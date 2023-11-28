@@ -3,6 +3,7 @@ package lotto
 import lotto.model.Lotto
 import lotto.util.Validator.validatePurchaseAmount
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
@@ -25,9 +26,9 @@ class LottoTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = ["1000", "5000", "8000 "])
+    @ValueSource(strings = ["1000", "5000", "8000"])
     fun `올바른 구입 금액 입력`(purchaseAmount: String) {
-        assertThrows<IllegalArgumentException> { validatePurchaseAmount(purchaseAmount) }
+        assertDoesNotThrow { validatePurchaseAmount(purchaseAmount) }
     }
 
     @ParameterizedTest
