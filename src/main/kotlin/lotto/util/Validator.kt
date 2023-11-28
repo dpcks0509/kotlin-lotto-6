@@ -44,7 +44,7 @@ object Validator {
     }
 
     private fun validateWinningNumbersNoDuplicate(winningNumbers: List<Int>) {
-        require(winningNumbers.size == LOTTO_NUMBER_COUNT) { Exception.INVALID_WINNING_NUMBERS_NO_DUPLICATE.getMessage() }
+        require(winningNumbers.toSet().size == LOTTO_NUMBER_COUNT) { Exception.INVALID_WINNING_NUMBERS_NO_DUPLICATE.getMessage() }
     }
 
     fun validateBonusNumber(bonusNumber: String, winningNumbers: List<Int>): Int {
