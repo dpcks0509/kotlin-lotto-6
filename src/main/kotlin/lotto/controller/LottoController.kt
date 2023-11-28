@@ -2,6 +2,7 @@ package lotto.controller
 
 import lotto.model.Purchase
 import lotto.model.WinningLotto
+import lotto.model.WinningResult
 import lotto.view.InputView
 import lotto.view.OutputView
 
@@ -12,7 +13,8 @@ class LottoController {
         val purchase = purchaseLottos()
         getPurchaseInfo(purchase)
 
-        val winning = getWinningLottoInfo()
+        val winningLotto = getWinningLottoInfo()
+        val winningResult = getWinningResult(purchase, winningLotto)
     }
 
     private fun <T> getInputUntilValid(inputFunction: () -> T): T {
@@ -38,5 +40,11 @@ class LottoController {
         val winningNumbers = getInputUntilValid { inputView.readWinningNumbers() }
         val bonusNumber = getInputUntilValid { inputView.readBonusNumber(winningNumbers) }
         return WinningLotto(winningNumbers, bonusNumber)
+    }
+
+    private fun getWinningResult(purchase: Purchase, winningLotto: WinningLotto): WinningResult {
+        val winningResult = WinningResult(purchase, winningLotto)
+
+        return winningResult
     }
 }
