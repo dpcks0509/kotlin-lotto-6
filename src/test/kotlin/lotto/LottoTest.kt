@@ -25,6 +25,12 @@ class LottoTest {
     }
 
     @ParameterizedTest
+    @ValueSource(strings = ["1000", "5000", "8000 "])
+    fun `올바른 구입 금액 입력`(purchaseAmount: String) {
+        assertThrows<IllegalArgumentException> { validatePurchaseAmount(purchaseAmount) }
+    }
+
+    @ParameterizedTest
     @ValueSource(strings = ["oneThousand", " 1000", "1000 "])
     fun `구입 금액 입력 예외 처리 (구입 금액은 문자나 공백 입력이 허용되지 않는다)`(purchaseAmount: String) {
         assertThrows<IllegalArgumentException> { validatePurchaseAmount(purchaseAmount) }
