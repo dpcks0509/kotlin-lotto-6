@@ -1,7 +1,9 @@
 package lotto
 
 import lotto.model.Lotto
+import lotto.model.Purchase
 import lotto.util.Validator.validatePurchaseAmount
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
@@ -35,5 +37,15 @@ class LottoTest {
     @ValueSource(strings = ["oneThousand", " 1000", "1000 "])
     fun `구입 금액 입력 예외 처리 (구입 금액은 문자나 공백 입력이 허용되지 않는다)`(purchaseAmount: String) {
         assertThrows<IllegalArgumentException> { validatePurchaseAmount(purchaseAmount) }
+    }
+
+    @Test
+    fun `발행한 로또 수량 계산`() {
+        val purchase = Purchase(8000)
+        val expectPurchaseCount = 8
+
+        val actualPurchaseCount = purchase.getCount()
+
+        assertThat(actualPurchaseCount).isEqualTo(expectPurchaseCount)
     }
 }
