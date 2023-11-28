@@ -6,6 +6,7 @@ import lotto.util.Constants.LOTTO_NUMBER_COUNT
 import lotto.util.Constants.LOTTO_NUMBER_END
 import lotto.util.Constants.LOTTO_NUMBER_START
 import lotto.util.Validator.validatePurchaseAmount
+import lotto.util.Validator.validateWinningNumbers
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -62,5 +63,35 @@ class LottoTest {
             }
             assertThat(lotto.getNumbers().toSet().size).isEqualTo(LOTTO_NUMBER_COUNT)
         }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["1,2,3,4,5,6", "7,8,9,10,11,12"])
+    fun `올바른 당첨 번호 입력`(winningNumbers: String) {
+        assertDoesNotThrow { validateWinningNumbers(winningNumbers) }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["one,2,3,4,5,6", " 7,8,9,10,11,12", "13,14,15,16,17,18 "])
+    fun `올바른 당첨 번호 입력 예외 처리 (당첨 번호는 문자나 공백 입력이 허용되지 않는다)`(winningNumbers: String) {
+        assertThrows<IllegalArgumentException> { validateWinningNumbers(winningNumbers) }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["0,1,2,3,4,5", "-1,2,3,4,5,6", "1,2,3,4,5,46"])
+    fun `올바른 당첨 번호 입력 예외 처리 (당첨 번호의 숫자 범위는 1~45까지이다)`(winningNumbers: String) {
+        assertThrows<IllegalArgumentException> { validateWinningNumbers(winningNumbers) }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["1,2,3,4,5,6,7", "7,8,9,10,11,12,13"])
+    fun `올바른 당첨 번호 입력 예외 처리 (당첨 번호의 개수는 6개 이다)`(winningNumbers: String) {
+        assertThrows<IllegalArgumentException> { validateWinningNumbers(winningNumbers) }
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = ["1,1,2,3,4,5", "7,8,9,10,11,11"])
+    fun `올바른 당첨 번호 입력 예외 처리 (당첨 번호는 중복되지 않는다)`(winningNumbers: String) {
+        assertThrows<IllegalArgumentException> { validateWinningNumbers(winningNumbers) }
     }
 }
