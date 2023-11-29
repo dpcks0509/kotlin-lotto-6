@@ -22,12 +22,16 @@ class OutputView {
         println()
         println("당첨 통계")
         println("---")
+        printNumberOfPrize(winningResult)
+        printRateOfReturn(winningResult.getRateOfReturn())
+    }
+
+    fun printNumberOfPrize(winningResult: WinningResult) {
         println("3개 일치 (5,000원) - ${winningResult.getNumberOfFifthPrize()}개")
         println("4개 일치 (50,000원) - ${winningResult.getNumberOfFourthPrize()}개")
         println("5개 일치 (1,500,000원) - ${winningResult.getNumberOfThirdPrize()}개")
         println("5개 일치, 보너스 볼 일치 (30,000,000원) - ${winningResult.getNumberOfSecondPrize()}개")
         println("6개 일치 (2,000,000,000원) - ${winningResult.getNumberOfFirstPrize()}개")
-        printRateOfReturn(winningResult.getRateOfReturn())
     }
 
     fun printRateOfReturn(rateOfReturn: Double) {

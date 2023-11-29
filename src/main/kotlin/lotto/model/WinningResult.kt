@@ -55,7 +55,6 @@ class WinningResult(private val purchase: Purchase, private val winningLotto: Wi
                 + numberOfFifthPrize * WinningPrize.FIFTH_PRIZE.getReward())
     }
 
-
     fun getNumberOfFirstPrize() = numberOfFirstPrize
     fun getNumberOfSecondPrize() = numberOfSecondPrize
     fun getNumberOfThirdPrize() = numberOfThirdPrize
