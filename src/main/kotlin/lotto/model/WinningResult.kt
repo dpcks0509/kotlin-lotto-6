@@ -1,65 +1,42 @@
 package lotto.model
 
-class WinningResult(private val purchase: Purchase, private val winningLotto: WinningLotto) {
-    private var numberOfFirstPrize = 0
-    private var numberOfSecondPrize = 0
-    private var numberOfThirdPrize = 0
-    private var numberOfFourthPrize = 0
-    private var numberOfFifthPrize = 0
+import lotto.util.Constants.FIFTH_RANK
+import lotto.util.Constants.FIRST_RANK
+import lotto.util.Constants.FOURTH_RANK
+import lotto.util.Constants.SECOND_RANK
+import lotto.util.Constants.THIRD_RANK
 
+class WinningResult(private val purchase: Purchase, private val winningLotto: WinningLotto) {
+    private val numberOfRanks = MutableList(6) { 0 }
     private var rateOfReturn = 0.0
 
     init {
-        calculateNumberOfPrize()
-        rateOfReturn = calculateRateOfReturn()
+        calculateNumberOfRanks()
+        calculateRateOfReturn()
     }
 
-    private fun calculateNumberOfPrize() {
+    private fun calculateNumberOfRanks() {
         purchase.getLottos().forEach { lotto ->
-            judgePrize(lotto.getNumbers())
+            val rank = winningLotto.judgeRank(lotto.getNumbers())
+            numberOfRanks[rank] += 1
         }
     }
 
-    private fun judgePrize(numbers: List<Int>) {
-        val numberOfMatching = judgeNumberOfMatching(numbers)
-        val isBonusMatching = judgeBonusMatching(numbers)
-
-        when {
-            numberOfMatching == 6 -> numberOfFirstPrize += 1
-            numberOfMatching == 5 && isBonusMatching -> numberOfSecondPrize += 1
-            numberOfMatching == 5 -> numberOfThirdPrize += 1
-            numberOfMatching == 4 -> numberOfFourthPrize += 1
-            numberOfMatching == 3 -> numberOfFifthPrize += 1
-        }
-    }
-
-    private fun judgeNumberOfMatching(numbers: List<Int>): Int {
-        return numbers.intersect(winningLotto.getWinningNumbers()).size
-    }
-
-    private fun judgeBonusMatching(numbers: List<Int>): Boolean {
-        return numbers.contains(winningLotto.getBonusNumber())
-    }
-
-    private fun calculateRateOfReturn(): Double {
+    private fun calculateRateOfReturn() {
         val purchaseAmount = purchase.getAmount()
         val totalReward = calculateTotalReward()
-        return (totalReward * 100.0) / purchaseAmount
+        rateOfReturn = (totalReward * 100.0) / purchaseAmount
     }
 
     private fun calculateTotalReward(): Int {
-        return (numberOfFirstPrize * WinningPrize.FIRST_PRIZE.getReward()
-                + numberOfSecondPrize * WinningPrize.SECOND_PRIZE.getReward()
-                + numberOfThirdPrize * WinningPrize.THIRD_PRIZE.getReward()
-                + numberOfFourthPrize * WinningPrize.FOURTH_PRIZE.getReward()
-                + numberOfFifthPrize * WinningPrize.FIFTH_PRIZE.getReward())
+        return (numberOfRanks[FIRST_RANK] * WinningPrize.FIRST_PRIZE.getReward()
+                + numberOfRanks[SECOND_RANK] * WinningPrize.SECOND_PRIZE.getReward()
+                + numberOfRanks[THIRD_RANK] * WinningPrize.THIRD_PRIZE.getReward()
+                + numberOfRanks[FOURTH_RANK] * WinningPrize.FOURTH_PRIZE.getReward()
+                + numberOfRanks[FIFTH_RANK] * WinningPrize.FIFTH_PRIZE.getReward())
     }
 
-    fun getNumberOfFirstPrize() = numberOfFirstPrize
-    fun getNumberOfSecondPrize() = numberOfSecondPrize
-    fun getNumberOfThirdPrize() = numberOfThirdPrize
-    fun getNumberOfFourthPrize() = numberOfFourthPrize
-    fun getNumberOfFifthPrize() = numberOfFifthPrize
+    fun getNumberOfRank(rank: Int) = numberOfRanks[rank]
 
     fun getRateOfReturn() = rateOfReturn
 }

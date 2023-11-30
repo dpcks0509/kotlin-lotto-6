@@ -8,6 +8,10 @@ class Lotto(private val numbers: List<Int>) {
         require(numbers.toSet().size == LOTTO_NUMBER_COUNT)
     }
 
+    fun judgeNumberOfMatching(purchaseNumbers: List<Int>): Int {
+        return purchaseNumbers.intersect(numbers).size
+    }
+
     override fun toString(): String {
         return numbers.sorted().joinToString(", ", "[", "]")
     }
