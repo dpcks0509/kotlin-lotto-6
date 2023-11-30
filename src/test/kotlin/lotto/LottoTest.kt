@@ -191,4 +191,15 @@ class LottoTest {
 
         assertThat(actualRank).isEqualTo(expectRank)
     }
+
+    @Test
+    fun `수익률 계산`() {
+        val purchase = Purchase(8000)
+        val expectRateOfReturn = 62.5
+
+        purchase.calculateRateOfReturn(5000)
+        val actualRateOfReturn = purchase.getRateOfReturn()
+
+        assertThat(actualRateOfReturn).isEqualTo(expectRateOfReturn)
+    }
 }
