@@ -1,7 +1,9 @@
 package lotto
 
+import lotto.model.Bonus
 import lotto.model.Lotto
 import lotto.model.Purchase
+import lotto.model.WinningLotto
 import lotto.util.Constants.LOTTO_NUMBER_COUNT
 import lotto.util.Constants.LOTTO_NUMBER_END
 import lotto.util.Constants.LOTTO_NUMBER_START
@@ -122,5 +124,71 @@ class LottoTest {
     fun `보너스 번호 입력 예외 처리 (보너스 번호는 당첨 번호와 중복되지 않는다)`(bonusNumber: String) {
         val winningNumbers = listOf(1, 2, 3, 4, 5, 6)
         assertThrows<IllegalArgumentException> { validateBonusNumber(bonusNumber, winningNumbers) }
+    }
+
+    @Test
+    fun `1등 당첨 확인`() {
+        val winningLotto = WinningLotto(Lotto(listOf(1,2,3,4,5,6)), Bonus(7))
+        val purchaseLotto = listOf(1,2,3,4,5,6)
+        val expectRank = 1
+
+        val actualRank = winningLotto.judgeRank(purchaseLotto)
+
+        assertThat(actualRank).isEqualTo(expectRank)
+    }
+
+    @Test
+    fun `2등 당첨 확인`() {
+        val winningLotto = WinningLotto(Lotto(listOf(1,2,3,4,5,6)), Bonus(7))
+        val purchaseLotto = listOf(1,2,3,4,5,7)
+        val expectRank = 2
+
+        val actualRank = winningLotto.judgeRank(purchaseLotto)
+
+        assertThat(actualRank).isEqualTo(expectRank)
+    }
+
+    @Test
+    fun `3등 당첨 확인`() {
+        val winningLotto = WinningLotto(Lotto(listOf(1,2,3,4,5,6)), Bonus(7))
+        val purchaseLotto = listOf(1,2,3,4,5,8)
+        val expectRank = 3
+
+        val actualRank = winningLotto.judgeRank(purchaseLotto)
+
+        assertThat(actualRank).isEqualTo(expectRank)
+    }
+
+    @Test
+    fun `4등 당첨 확인`() {
+        val winningLotto = WinningLotto(Lotto(listOf(1,2,3,4,5,6)), Bonus(7))
+        val purchaseLotto = listOf(1,2,3,4,8,9)
+        val expectRank = 4
+
+        val actualRank = winningLotto.judgeRank(purchaseLotto)
+
+        assertThat(actualRank).isEqualTo(expectRank)
+    }
+
+    @Test
+    fun `5등 당첨 확인`() {
+        val winningLotto = WinningLotto(Lotto(listOf(1,2,3,4,5,6)), Bonus(7))
+        val purchaseLotto = listOf(1,2,3,8,9,10)
+        val expectRank = 5
+
+        val actualRank = winningLotto.judgeRank(purchaseLotto)
+
+        assertThat(actualRank).isEqualTo(expectRank)
+    }
+
+    @Test
+    fun `미당첨 확인`() {
+        val winningLotto = WinningLotto(Lotto(listOf(1,2,3,4,5,6)), Bonus(7))
+        val purchaseLotto = listOf(8,9,10,11,12,13)
+        val expectRank = 0
+
+        val actualRank = winningLotto.judgeRank(purchaseLotto)
+
+        assertThat(actualRank).isEqualTo(expectRank)
     }
 }
