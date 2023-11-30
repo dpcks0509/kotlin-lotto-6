@@ -7,6 +7,7 @@ import lotto.util.Constants.LOTTO_UNIT
 class Purchase(private val amount: Int) {
     private var count = 0
     private var lottos = listOf<Lotto>()
+    private var rateOfReturn = 0.0
 
     init {
         count = calculatePurchaseCount()
@@ -34,7 +35,13 @@ class Purchase(private val amount: Int) {
         return lottos
     }
 
+    fun calculateRateOfReturn(totalReward: Int) {
+        rateOfReturn = (totalReward * 100.0) / amount
+    }
+
     fun getAmount() = amount
     fun getCount() = count
     fun getLottos() = lottos
+
+    fun getRateOfReturn() = rateOfReturn
 }

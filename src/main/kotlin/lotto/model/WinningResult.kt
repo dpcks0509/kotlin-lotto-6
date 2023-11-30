@@ -8,11 +8,11 @@ import lotto.util.Constants.THIRD_RANK
 
 class WinningResult(private val purchase: Purchase, private val winningLotto: WinningLotto) {
     private val numberOfRanks = MutableList(6) { 0 }
-    private var rateOfReturn = 0.0
+    private var totalReward = 0
 
     init {
         calculateNumberOfRanks()
-        calculateRateOfReturn()
+        calculateTotalReward()
     }
 
     private fun calculateNumberOfRanks() {
@@ -22,14 +22,9 @@ class WinningResult(private val purchase: Purchase, private val winningLotto: Wi
         }
     }
 
-    private fun calculateRateOfReturn() {
-        val purchaseAmount = purchase.getAmount()
-        val totalReward = calculateTotalReward()
-        rateOfReturn = (totalReward * 100.0) / purchaseAmount
-    }
 
-    private fun calculateTotalReward(): Int {
-        return (numberOfRanks[FIRST_RANK] * WinningPrize.FIRST_PRIZE.getReward()
+    private fun calculateTotalReward() {
+        totalReward = (numberOfRanks[FIRST_RANK] * WinningPrize.FIRST_PRIZE.getReward()
                 + numberOfRanks[SECOND_RANK] * WinningPrize.SECOND_PRIZE.getReward()
                 + numberOfRanks[THIRD_RANK] * WinningPrize.THIRD_PRIZE.getReward()
                 + numberOfRanks[FOURTH_RANK] * WinningPrize.FOURTH_PRIZE.getReward()
@@ -37,6 +32,5 @@ class WinningResult(private val purchase: Purchase, private val winningLotto: Wi
     }
 
     fun getNumberOfRank(rank: Int) = numberOfRanks[rank]
-
-    fun getRateOfReturn() = rateOfReturn
+    fun getTotalReward() = totalReward
 }

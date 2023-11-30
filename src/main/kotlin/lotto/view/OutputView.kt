@@ -28,7 +28,6 @@ class OutputView {
         println("당첨 통계")
         println("---")
         printNumberOfPrize(winningResult)
-        printRateOfReturn(winningResult.getRateOfReturn())
     }
 
     fun printNumberOfPrize(winningResult: WinningResult) {

@@ -43,5 +43,11 @@ class LottoController {
     private fun getWinningResult(purchase: Purchase, winningLotto: WinningLotto) {
         val winningResult = WinningResult(purchase, winningLotto)
         outputView.printWinningResult(winningResult)
+        getRateOfReturn(purchase, winningResult)
+    }
+
+    private fun getRateOfReturn(purchase: Purchase, winningResult: WinningResult) {
+        purchase.calculateRateOfReturn(winningResult.getTotalReward())
+        outputView.printRateOfReturn(purchase.getRateOfReturn())
     }
 }
