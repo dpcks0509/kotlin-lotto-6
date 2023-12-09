@@ -7,13 +7,13 @@ import lotto.util.Constants.LOTTO_UNIT
 
 object Validator {
     fun validatePurchaseAmount(purchaseAmount: String): Int {
-        validatePurchaseAmountFormat(purchaseAmount)
+        validatePurchaseAmountRange(purchaseAmount)
         validatePurchaseAmountUnit(purchaseAmount)
         return purchaseAmount.toInt()
     }
 
-    private fun validatePurchaseAmountFormat(purchaseAmount: String) {
-        requireNotNull(purchaseAmount.toIntOrNull()) { Exception.INVALID_PURCHASE_AMOUNT_FORMAT.getMessage() }
+    private fun validatePurchaseAmountRange(purchaseAmount: String) {
+        require((purchaseAmount.toIntOrNull() ?: 0) >= 1000) { Exception.INVALID_PURCHASE_AMOUNT_RANGE.getMessage() }
     }
 
     private fun validatePurchaseAmountUnit(purchaseAmount: String) {
