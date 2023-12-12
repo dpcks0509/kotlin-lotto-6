@@ -9,4 +9,6 @@ class Lotto(private val numbers: List<Int>) {
     override fun toString(): String {
         return numbers.sorted().joinToString(", ", "[", "]")
     }
+
+    fun getNumbers() = numbers
 }

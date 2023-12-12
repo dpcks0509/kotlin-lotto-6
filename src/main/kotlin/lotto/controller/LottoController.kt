@@ -1,22 +1,28 @@
 package lotto.controller
 
-import lotto.model.Lotto
-import lotto.model.LottoMachine
-import lotto.model.Purchase
+import lotto.model.*
 import lotto.view.InputView
 import lotto.view.OutputView
 
 class LottoController(private val inputView: InputView, private val outputView: OutputView) {
+    private lateinit var purchase: Purchase
+    private lateinit var winningLotto: WinningLotto
+    private lateinit var winningResult: WinningResult
 
     fun run() {
+        purchaseLottos()
+        drawWinningLotto()
+        provideWinningResult()
+    }
+
+    private fun purchaseLottos() {
         val purchaseAmount = inputView.readPurchaseAmount()
-        val purchase = Purchase(purchaseAmount)
+        purchase = Purchase(purchaseAmount)
         val purchaseCount = purchase.getCount()
         outputView.printPurchaseCount(purchaseCount)
         val lottos = issueLottos(purchaseCount)
+        purchase.setLottos(lottos)
         printLottos(lottos)
-        val winningNumbers = inputView.readWinningNumbers()
-        val bonusNumber = inputView.readBonusNumber(winningNumbers)
     }
 
     private fun issueLottos(purchaseCount: Int): List<Lotto> {
@@ -32,5 +38,16 @@ class LottoController(private val inputView: InputView, private val outputView: 
         lottos.forEach { lotto ->
             outputView.printLotto(lotto)
         }
+    }
+
+    private fun drawWinningLotto() {
+        val winningNumbers = inputView.readWinningNumbers()
+        val bonusNumber = inputView.readBonusNumber(winningNumbers)
+        winningLotto = WinningLotto(winningNumbers, bonusNumber)
+    }
+
+    private fun provideWinningResult() {
+        winningResult = WinningResult(purchase, winningLotto)
+        outputView.printWinningStatistics(winningResult.getWinningStatistics())
     }
 }
