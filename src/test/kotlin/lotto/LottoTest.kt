@@ -3,6 +3,7 @@ package lotto
 import lotto.model.Lotto
 import lotto.model.Purchase
 import lotto.model.WinningLotto
+import lotto.model.WinningResult
 import lotto.utils.Validator.validateBonusNumber
 import lotto.utils.Validator.validatePurchaseAmount
 import lotto.utils.Validator.validateWinningNumbers
@@ -113,5 +114,21 @@ class LottoTest {
         val actualLottoRank = WinningLotto(winningNumbers, bonusNumber).getWinningRank(lottoNumbers)
 
         assertThat(actualLottoRank).isEqualTo(expectLottoRank)
+    }
+
+    @ParameterizedTest
+    @CsvSource("1,2,3,4,5,6:200000000", "1,2,3,4,5,7:3000000", "1,2,3,4,5,8:150000", "1,2,3,4,8,9:5000", "1,2,3,8,9,10:500", delimiter = ':')
+    fun `로또 수익률 계산`(numbers: String, expectRateOfReturn: Double) {
+        val lottoNumbers = numbers.split(",").map { number -> number.toInt() }
+        val purchase = Purchase(1000)
+        val lottos = listOf(Lotto(lottoNumbers))
+        purchase.setLottos(lottos)
+        val winningNumbers = listOf(1, 2, 3, 4, 5, 6)
+        val bonusNumber = 7
+        val winningLotto = WinningLotto(winningNumbers, bonusNumber)
+
+        val actualRateOfReturn = WinningResult(purchase, winningLotto).getRateOfReturn()
+
+        assertThat(actualRateOfReturn).isEqualTo(expectRateOfReturn)
     }
 }
