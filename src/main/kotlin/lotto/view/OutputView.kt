@@ -34,8 +34,6 @@ class OutputView {
     }
 
     companion object {
-
         private val decimalFormat = DecimalFormat("#.#")
-
     }
 }
