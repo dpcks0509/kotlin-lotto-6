@@ -1,13 +1,16 @@
 package lotto
 
 import lotto.model.Lotto
+import lotto.model.Purchase
 import lotto.utils.Validator.validateBonusNumber
 import lotto.utils.Validator.validatePurchaseAmount
 import lotto.utils.Validator.validateWinningNumbers
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 
 
@@ -87,5 +90,15 @@ class LottoTest {
     fun `보너스 번호 입력 예외 처리 (보너스 번호가 당첨 숫자와 중복되는 경우)`(bonusNumber: String) {
         val winningNumbers = listOf(1, 2, 3, 4, 5, 6)
         assertThrows<IllegalArgumentException> { validateBonusNumber(bonusNumber, winningNumbers) }
+    }
+
+    @ParameterizedTest
+    @CsvSource("8000:8", "10000:10",delimiter = ':')
+    fun `발행한 로또 수량 계산`(purchaseAmount: Int, expectPurchaseCount: Int) {
+        val purchase = Purchase(purchaseAmount)
+
+        val actualPurchaseCount = purchase.getCount()
+
+        assertThat(actualPurchaseCount).isEqualTo(expectPurchaseCount)
     }
 }
