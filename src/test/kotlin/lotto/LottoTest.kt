@@ -2,6 +2,7 @@ package lotto
 
 import lotto.model.Lotto
 import lotto.model.Purchase
+import lotto.model.WinningLotto
 import lotto.utils.Validator.validateBonusNumber
 import lotto.utils.Validator.validatePurchaseAmount
 import lotto.utils.Validator.validateWinningNumbers
@@ -93,12 +94,24 @@ class LottoTest {
     }
 
     @ParameterizedTest
-    @CsvSource("8000:8", "10000:10",delimiter = ':')
+    @CsvSource("8000:8", "10000:10", delimiter = ':')
     fun `발행한 로또 수량 계산`(purchaseAmount: Int, expectPurchaseCount: Int) {
         val purchase = Purchase(purchaseAmount)
 
         val actualPurchaseCount = purchase.getCount()
 
         assertThat(actualPurchaseCount).isEqualTo(expectPurchaseCount)
+    }
+
+    @ParameterizedTest
+    @CsvSource("1,2,3,4,5,6:1", "1,2,3,4,5,7:2", "1,2,3,4,5,8:3", "1,2,3,4,8,9:4", "1,2,3,8,9,10:5", delimiter = ':')
+    fun `로또 등수 계산`(numbers: String, expectLottoRank: Int) {
+        val lottoNumbers = numbers.split(",").map { number -> number.toInt() }
+        val winningNumbers = listOf(1, 2, 3, 4, 5, 6)
+        val bonusNumber = 7
+
+        val actualLottoRank = WinningLotto(winningNumbers, bonusNumber).getWinningRank(lottoNumbers)
+
+        assertThat(actualLottoRank).isEqualTo(expectLottoRank)
     }
 }
