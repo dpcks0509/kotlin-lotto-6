@@ -3,11 +3,15 @@ package lotto.model
 import lotto.utils.Constants.LOTTO_AMOUNT
 
 class Purchase(private val amount: Int) {
-    private val count = calculateCount()
+    private var count = 0
     private var lottos = listOf<Lotto>()
 
-    private fun calculateCount(): Int {
-        return amount / LOTTO_AMOUNT
+    init {
+        calculateCount()
+    }
+
+    private fun calculateCount() {
+        count = amount / LOTTO_AMOUNT
     }
 
     fun setLottos(lottos: List<Lotto>) {
@@ -15,6 +19,7 @@ class Purchase(private val amount: Int) {
     }
 
     fun getLottos() = lottos
-
     fun getCount() = count
+    fun getAmount() = amount
+
 }

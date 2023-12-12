@@ -49,5 +49,6 @@ class LottoController(private val inputView: InputView, private val outputView: 
     private fun provideWinningResult() {
         winningResult = WinningResult(purchase, winningLotto)
         outputView.printWinningStatistics(winningResult.getWinningStatistics())
+        outputView.printRateOfReturn(winningResult.getRateOfReturn())
     }
 }
