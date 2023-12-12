@@ -15,6 +15,8 @@ class LottoController(private val inputView: InputView, private val outputView: 
         outputView.printPurchaseCount(purchaseCount)
         val lottos = issueLottos(purchaseCount)
         printLottos(lottos)
+        val winningNumbers = inputView.readWinningNumbers()
+        val bonusNumber = inputView.readBonusNumber(winningNumbers)
     }
 
     private fun issueLottos(purchaseCount: Int): List<Lotto> {

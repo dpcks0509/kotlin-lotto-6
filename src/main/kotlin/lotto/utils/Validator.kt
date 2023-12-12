@@ -47,4 +47,19 @@ object Validator {
     private fun validateWinningNumbersDuplicate(winningNumbers: List<Int>) {
         require(winningNumbers.toSet().size == LOTTO_COUNT) { Exception.INVALID_WINNING_NUMBERS_DUPLICATE.getMessage() }
     }
+
+    fun validateBonusNumber(bonusNumber: String, winningNumbers: List<Int>): Int {
+        val validBonusNumber = bonusNumber.toIntOrNull() ?: 0
+        validateBonusNumberRange(validBonusNumber)
+        validateBonusNumberDuplicate(validBonusNumber, winningNumbers)
+        return validBonusNumber
+    }
+
+    private fun validateBonusNumberRange(bonusNumber: Int) {
+        require(bonusNumber in LOTTO_START_NUMBER..LOTTO_END_NUMBER) { Exception.INVALID_BONUS_NUMBER_RANGE.getMessage() }
+    }
+
+    private fun validateBonusNumberDuplicate(bonusNumber: Int, winningNumbers: List<Int>) {
+        require(!winningNumbers.contains(bonusNumber)) { Exception.INVALID_BONUS_NUMBER_DUPLICATE.getMessage() }
+    }
 }

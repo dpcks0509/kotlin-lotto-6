@@ -1,6 +1,7 @@
 package lotto.view
 
 import camp.nextstep.edu.missionutils.Console
+import lotto.utils.Validator.validateBonusNumber
 import lotto.utils.Validator.validatePurchaseAmount
 import lotto.utils.Validator.validateWinningNumbers
 
@@ -25,6 +26,18 @@ class InputView {
         } catch (exception: IllegalArgumentException) {
             println(exception.message)
             readWinningNumbers()
+        }
+    }
+
+    fun readBonusNumber(winningNumbers: List<Int>): Int {
+        println()
+        println("보너스 번호를 입력해 주세요.")
+        val bonusNumber = Console.readLine()
+        return try {
+            validateBonusNumber(bonusNumber, winningNumbers)
+        } catch (exception: IllegalArgumentException) {
+            println(exception.message)
+            readBonusNumber(winningNumbers)
         }
     }
 }
